@@ -3,7 +3,7 @@ public Plate ground = null;
 
 void setup() {
   size(700, 600);
-  bob = new Human();
+  bob = new Human(40, 40, 100, 45);
   bob.say();
   ground = makeGroundPlate(100, 30);
 }
@@ -41,4 +41,5 @@ void drawMinus(int x, int y, int w) {
 void draw() {
   repaintBackground();
   ground.draw();
+  bob.draw();
 }

@@ -9,6 +9,14 @@ public class Human {
   private int tallness = 50;
   private int wideness = 20; // wideness of head
   private boolean onGround = false;
+  private Boat myBoat = null;
+  private Timer positiveWeightTimer = new Timer(0, 0);
+  private Timer negativeWeightTimer = new Timer(0, 0);
+  private Timer neutralWeightTimer = new Timer(0, 0);
+  
+  public boolean hasBoat() {
+    return myBoat != null;
+  }
   
   public Human(int x, int y, int mass, int tallness) {
     this.x = x;
@@ -23,6 +31,9 @@ public class Human {
   
   private void checkKeyboard() {
     if (keyPressed) {
+      positiveWeightTimer.update(frameCount);
+      negativeWeightTimer.update(frameCount);
+      neutralWeightTimer.update(frameCount);
       switch (keyCode) {
         case UP:
           jump();
@@ -32,6 +43,33 @@ public class Human {
           break;
         case RIGHT:
           walkRight();
+          break;
+        default:
+          break;
+      }
+      switch (key) {
+        case ENTER:
+          // Equip a boat. Change this later to allow detection of background boat
+          println("Equipping...");
+          equipBoat(boat);
+          break;
+        case '=':
+          if (positiveWeightTimer.isExpired()) {
+            weights.add(new Weight(x, y, 100, 2, 20));
+            positiveWeightTimer = new Timer(frameCount, 7);
+          }
+          break;
+        case '-':
+          if (negativeWeightTimer.isExpired()) {
+            weights.add(new Weight(x, y, -100, 2, 20));
+            negativeWeightTimer = new Timer(frameCount, 7);
+          }
+          break;
+        case '0':
+          if (neutralWeightTimer.isExpired()) {
+            weights.add(new Weight(x, y, 0, 2, 20));
+            neutralWeightTimer = new Timer(frameCount, 7);
+          }
           break;
         default:
           break;
@@ -109,9 +147,21 @@ public class Human {
     // Right leg:
     line(x, y + tallness - wideness/2, x + wideness/2, y + tallness);
     strokeWeight(1);
+    if (hasBoat()) {
+      // Draw boat:
+      myBoat.move(x - myBoat.getWideness()/2, y + tallness);
+      myBoat.draw(true);
+    }
   }
   
-  public void say() {
-    println("This is a test.");
+  
+  public void equipBoat(Boat b) {
+    b.removeMe();
+    myBoat = b;
+    myBoat.move(x, y);
   }
+  
+  /* public void say() {
+    println("This is a test.");
+  } */
 }

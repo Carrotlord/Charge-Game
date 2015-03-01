@@ -1,9 +1,12 @@
 public Human bob = null;
 public Plate ground = null;
 
+public int gravity = 1; // Units: (pixels per frame) per frame. Force = this * mass.
+public int terminalVelocity = 40; // Units: pixels per frame.
+
 void setup() {
   size(700, 600);
-  bob = new Human(40, 40, 100, 45);
+  bob = new Human(width/2, 40, 100, 45);
   bob.say();
   ground = makeGroundPlate(100, 30);
 }
@@ -42,4 +45,7 @@ void draw() {
   repaintBackground();
   ground.draw();
   bob.draw();
+  bob.update();
+  //bob.jump();
+  bob.walkLeft();
 }

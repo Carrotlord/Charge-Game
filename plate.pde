@@ -22,9 +22,13 @@ public class Plate {
     } else {
       rect(x, y, wideness, tallness);
       if (charge > 0) {
-        drawPlus(x + wideness/2, y + 4, tallness - 8);
+        drawPlus(x + wideness/2 - tallness/4, y + 4, tallness - 8);
       } else if (charge < 0) {
       }
     }
+  }
+  
+  public int getTallness() {
+    return tallness;
   }
 }

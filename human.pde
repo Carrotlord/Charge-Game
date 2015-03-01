@@ -3,15 +3,74 @@
 public class Human {
   private int x = 0;
   private int y = 0;
-  private int mass = 100;
+  private int xVel = 0;
+  private int yVel = 0;
+  private int mass = 2;
   private int tallness = 50;
   private int wideness = 20; // wideness of head
+  private boolean onGround = false;
   
   public Human(int x, int y, int mass, int tallness) {
     this.x = x;
     this.y = y;
     this.mass = mass;
     this.tallness = tallness;
+  }
+  
+  public int myEffectiveHeight() {
+    return tallness;
+  }
+  
+  public void update() {
+    yVel += gravity;
+    if (yVel > terminalVelocity) {
+      yVel = terminalVelocity;
+    }
+    y += yVel;
+    
+    // Ground collision detection:
+    int groundLimit = height - ground.getTallness() - myEffectiveHeight() - 1;
+    if (y > groundLimit) {
+      yVel = 0;
+      y = groundLimit;
+      onGround = true;
+    }
+    
+    x += xVel;
+    int leftBoundary = wideness/2;
+    int rightBoundary = width - wideness/2;
+    if (x < leftBoundary) {
+      x = leftBoundary;
+      xVel = 0;
+    } else if (x > rightBoundary) {
+      x = rightBoundary;
+      xVel = 0;
+    }
+  }
+  
+  public void walkLeft() {
+    if (onGround) {
+      xVel = -10;
+    }
+  }
+  
+  public void stand() {
+    if (onGround) {
+      xVel = 0;
+    }
+  }
+  
+  public void walkRight() {
+    if (onGround) {
+      xVel = 10;
+    }
+  }
+  
+  public void jump() {
+    if (onGround) {
+      yVel = -10;
+      onGround = false;
+    }
   }
   
   public void draw() {

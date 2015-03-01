@@ -21,6 +21,27 @@ public class Human {
     return tallness;
   }
   
+  private void checkKeyboard() {
+    if (keyPressed) {
+      switch (keyCode) {
+        case UP:
+          jump();
+          break;
+        case LEFT:
+          walkLeft();
+          break;
+        case RIGHT:
+          walkRight();
+          break;
+        default:
+          break;
+      }
+    } else {
+      // Stop moving if we're not airborne.
+      stand();
+    }
+  }
+  
   public void update() {
     yVel += gravity;
     if (yVel > terminalVelocity) {
@@ -46,6 +67,8 @@ public class Human {
       x = rightBoundary;
       xVel = 0;
     }
+    
+    checkKeyboard();
   }
   
   public void walkLeft() {
@@ -68,7 +91,7 @@ public class Human {
   
   public void jump() {
     if (onGround) {
-      yVel = -10;
+      yVel = -16;
       onGround = false;
     }
   }

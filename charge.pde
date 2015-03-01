@@ -1,5 +1,6 @@
 public Human bob = null;
 public Plate ground = null;
+public Boat boat = null;
 
 public int gravity = 1; // Units: (pixels per frame) per frame. Force = this * mass.
 public int terminalVelocity = 40; // Units: pixels per frame.
@@ -9,6 +10,8 @@ void setup() {
   bob = new Human(width/2, 40, 100, 45);
   bob.say();
   ground = makeGroundPlate(100, 30);
+  boat = new Boat(80, 40, 70);
+  frame.setTitle("Charge - A Game by Oliver Chu");
 }
 
 Plate makeGroundPlate(int charge, int tallness) {
@@ -44,8 +47,12 @@ void drawMinus(int x, int y, int w) {
 void draw() {
   repaintBackground();
   ground.draw();
-  bob.draw();
+  
   bob.update();
+  bob.draw();
+  
+  boat.update();
+  boat.draw();
   //bob.jump();
-  bob.walkLeft();
+  //bob.walkLeft();
 }

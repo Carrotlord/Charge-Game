@@ -1,6 +1,9 @@
 /* @author Jiangcheng Oliver Chu */
 /* Written for Hackers@Berkeley Spring 2015 Hackathon */
 
+public ArrayList<Level> levels = new ArrayList<Level>();
+public int currentLevel = 0;
+
 public Human bob = null;
 public Plate ground = null;
 public Boat boat = null;
@@ -50,11 +53,9 @@ void boldGreenArrow(int x1, int y1, int x2, int y2) {
 void setup() {
   size(700, 600);
   //size(400, 400); // size of window can be changed without significantly affecting the first level
-  bob = new Human(width/2, 40, 100, 45);
-  //bob.say();
-  ground = makeGroundPlate(100, 30);
-  boat = new Boat(80, 40, 70);
   frame.setTitle("Charge - A Game by Oliver Chu");
+  levels.add(new Level0(0));
+  levels.get(0).runSetup();
 }
 
 Plate makeGroundPlate(int charge, int tallness) {
@@ -93,29 +94,18 @@ void goalReached() {
   }
 }
 
-void draw() {
-  repaintBackground();
-  
-  drawText("Goal", width/2 - 15, 30, 32, 0, 128, 0);
+void nextLevel() {
+  levels.get(currentLevel).runCleanup();
+  ++currentLevel;
+}
 
-  boldGreenArrow(width/2 - 30, 30, width/2 - 30, 10);
-  
-  ground.draw();
-  
-  bob.update();
-  bob.draw();
-  
-  boat.update(false);
-  boat.draw(false);
-  //bob.jump();
-  //bob.walkLeft();
-  
-  for (Weight w : weights) {
-    w.update();
-    w.draw();
-  }
-  
-  if (goal != null) {
-    goal.update();
+void draw() {
+  switch (currentLevel) {
+    case 0:
+      levels.get(0).runDraw();
+      break;
+    default:
+      // End of game
+      break;
   }
 }

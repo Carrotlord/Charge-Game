@@ -18,7 +18,7 @@ public class Goal {
     if (timer == null || !timer.isExpired()) {
       drawText("Level complete!", x, y, 32, 0, 128, 0);
       x -= 15;
-      println("x = " + x);
+      //println("x = " + x);
       if (x < width/2 - 100) {
         x = width/2 - 100;
         if (timer == null) {

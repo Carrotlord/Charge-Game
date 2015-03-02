@@ -4,7 +4,7 @@ public class Level0 extends Level {
   }
   
   public void runSetup() {
-    bob = new Human(width/2, 40, 100, 45);
+    bob = new Human(width/2, 100, 100, 45);
     //bob.say();
     ground = makeGroundPlate(100, 30);
     boat = new Boat(80, 40, 70);
@@ -38,6 +38,10 @@ public class Level0 extends Level {
   }
   
   public void runCleanup() {
-    
+    bob = null;
+    boat = null;
+    ground = null;
+    weights = new ArrayList<Weight>();
+    repaintBackground();
   }
 }

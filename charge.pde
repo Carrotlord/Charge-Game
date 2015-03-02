@@ -13,7 +13,7 @@ public int gravity = 1; // Units: (pixels per frame) per frame. Force = this * m
 public int terminalVelocity = 40; // Units: pixels per frame.
 public int electricField = -2; // Units: (pixels per frame) per frame. Force = this * charge.
 
-public PFont calibri = createFont("Calibri", 64, true);
+public PFont calibri = createFont("Calibri", 32, true);
 
 public Goal goal = null;
 
@@ -55,6 +55,8 @@ void setup() {
   //size(400, 400); // size of window can be changed without significantly affecting the first level
   frame.setTitle("Charge - A Game by Oliver Chu");
   levels.add(new Level0(0));
+  levels.add(new Level1(1));
+  levels.add(new Credits(2));
   levels.get(0).runSetup();
 }
 
@@ -90,22 +92,28 @@ void drawMinus(int x, int y, int w) {
 
 void goalReached() {
   if (goal == null) {
-    goal = new Goal(width + 100, height / 2, 250);
+    goal = new Goal(width + 100, height / 2, 175);
   }
 }
 
 void nextLevel() {
+  goal = null;
   levels.get(currentLevel).runCleanup();
   ++currentLevel;
+  if (currentLevel < levels.size()) {
+    levels.get(currentLevel).runSetup();
+  }
+}
+
+void resetLevel() {
+  levels.get(currentLevel).runCleanup();
+  levels.get(currentLevel).runSetup();
 }
 
 void draw() {
-  switch (currentLevel) {
-    case 0:
-      levels.get(0).runDraw();
-      break;
-    default:
-      // End of game
-      break;
+  if (currentLevel < levels.size()) {
+    levels.get(currentLevel).runDraw();
+  } else {
+    // End of game
   }
 }

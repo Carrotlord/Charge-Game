@@ -6,6 +6,15 @@ public class Weight {
   private int xVel = 0;
   private int charge = 0;
   private int wideness = 20;
+  private boolean onGround = false;
+  
+  public int getX() {
+    return x;
+  }
+  
+  public int getY() {
+    return y;
+  }
   
   public Weight(int x, int y, int charge, int mass, int wideness) {
     this.x = x;
@@ -38,6 +47,10 @@ public class Weight {
     }
   }
   
+  public boolean isOnGround() {
+    return onGround;
+  }
+  
   public void update() {
     // There's gravity, and there's the electric field.
     yVel += gravity + electricField * (charge / 100); // This is not the right way to do Coulomb's law, but it'll have to do for now.
@@ -54,6 +67,25 @@ public class Weight {
     if (y > groundLimit) {
       yVel = 0;
       y = groundLimit;
+      onGround = true;
+    }
+    
+    // Ceiling collision detection:
+    if (currentLevel == 1 && ceiling != null) {
+      int ceilingLimit = ceiling.getTallness() + 1;
+      if (y < ceilingLimit) {
+        yVel = 0;
+        y = ceilingLimit;
+        // onCeiling = true;
+      }
+    }
+    
+    // Pivot plate detection:
+    if (currentLevel == 1 && pivotSwitch != null && pivotSwitch.isActivated() && y < height/2) {
+      xVel += electricField;
+      if (xVel < -terminalVelocity) {
+        xVel = -terminalVelocity;
+      }
     }
   }
 }

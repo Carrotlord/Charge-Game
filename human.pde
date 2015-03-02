@@ -95,6 +95,10 @@ public class Human {
     }
     y += yVel;
     
+    if (yVel < 0) {
+      onGround = false;
+    }
+    
     // Ground collision detection:
     int groundLimit = height - ground.getTallness() - myEffectiveHeight() - 1;
     if (y > groundLimit) {
@@ -103,12 +107,38 @@ public class Human {
       onGround = true;
     }
     
+    // Ceiling collision detection:
+    if (currentLevel == 1 && ceiling != null && pivotSwitch != null && pivotSwitch.isActivated()) {
+      int ceilingLimit = ceiling.getTallness() + 45;
+      if (ceiling != null && y < ceilingLimit) {
+        yVel = 0;
+        y = ceilingLimit;
+        // onCeiling = true;
+      }
+    }
+    
+    if (currentLevel == 1 && y < width/2 && pivotSwitch != null && pivotSwitch.isActivated()) {
+      // The electric field in level 1 pushes us to the left.
+      xVel += electricField; // the electric field is negative.
+      if (xVel < -terminalVelocity) {
+        xVel = -terminalVelocity;
+      }
+    }
+    
     x += xVel;
-    int leftBoundary = wideness/2;
+    
+    int leftBoundary = 0;
+    if (currentLevel == 1) {
+      leftBoundary = wideness/2 + leftWall.getWideness();
+    } else {
+      leftBoundary = wideness/2;
+    }
     int rightBoundary = width - wideness/2;
     if (x < leftBoundary) {
-      x = leftBoundary;
-      xVel = 0;
+      if (currentLevel == 0 || pivotSwitch == null || !pivotSwitch.isActivated() || y > height/2) {
+        x = leftBoundary;
+        xVel = 0;
+      }
     } else if (x > rightBoundary) {
       x = rightBoundary;
       xVel = 0;
@@ -117,7 +147,19 @@ public class Human {
     checkKeyboard();
     
     if (y < 0) {
-      goalReached();
+      if (currentLevel == 0) {
+        goalReached();
+      } else {
+        resetLevel();
+      }
+    }
+    
+    if (x < -100) {
+      if (currentLevel == 1) {
+        goalReached();
+      } else {
+        resetLevel();
+      }
     }
   }
   

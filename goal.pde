@@ -14,6 +14,10 @@ public class Goal {
   public void update() {
     if (timer != null) {
       timer.update(frameCount);
+      if (timer.isExpired()) {
+        nextLevel();
+        // nextLevel() will delete this current goal.
+      }
     }
     if (timer == null || !timer.isExpired()) {
       drawText("Level complete!", x, y, 32, 0, 128, 0);

@@ -49,6 +49,10 @@ public class Boat {
     return wideness;
   }
   
+  public int getTallness() {
+    return tallness;
+  }
+  
   private void drawRope(int x, int y, int x2, int y2) {
     strokeWeight(2);
     line(x, y, x2, y2);

@@ -115,6 +115,10 @@ public class Human {
     }
     
     checkKeyboard();
+    
+    if (y < 0) {
+      goalReached();
+    }
   }
   
   public void walkLeft() {

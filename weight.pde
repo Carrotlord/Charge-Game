@@ -15,6 +15,19 @@ public class Weight {
     this.wideness = wideness;
   }
   
+  public int getWideness() {
+    return wideness;
+  }
+  
+  public void move(int newX, int newY) {
+    x = newX;
+    y = newY;
+  }
+  
+  public int getCharge() {
+    return charge;
+  }
+  
   public void draw() {
     // A weight is a box.
     rect(x, y, wideness, wideness);

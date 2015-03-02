@@ -1,3 +1,6 @@
+/* @author Jiangcheng Oliver Chu */
+/* Written for Hackers@Berkeley Spring 2015 Hackathon */
+
 public Human bob = null;
 public Plate ground = null;
 public Boat boat = null;

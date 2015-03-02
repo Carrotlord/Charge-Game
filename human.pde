@@ -50,12 +50,16 @@ public class Human {
       switch (key) {
         case ENTER:
           // Equip a boat. Change this later to allow detection of background boat
-          println("Equipping...");
           equipBoat(boat);
           break;
         case '=':
           if (positiveWeightTimer.isExpired()) {
-            weights.add(new Weight(x, y, 100, 2, 20));
+            // If we're on a boat, attach the charges to the boat.
+            if (hasBoat()) {
+              myBoat.attachWeight(new Weight(50, 50, 100, 2, 20));
+            } else {
+              weights.add(new Weight(x, y, 100, 2, 20));
+            }
             positiveWeightTimer = new Timer(frameCount, 7);
           }
           break;
@@ -82,6 +86,10 @@ public class Human {
   
   public void update() {
     yVel += gravity;
+    if (hasBoat()) {
+      yVel += gravity; // the boat has equal mass to the person.
+      yVel += myBoat.lift(); // What do the weights on the boat contribute?
+    }
     if (yVel > terminalVelocity) {
       yVel = terminalVelocity;
     }
@@ -128,7 +136,7 @@ public class Human {
   }
   
   public void jump() {
-    if (onGround) {
+    if (onGround && !hasBoat()) {
       yVel = -16;
       onGround = false;
     }
